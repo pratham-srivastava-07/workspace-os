@@ -36,6 +36,15 @@ export const addNote = createAsyncThunk("notes/addNote", async (note: Partial<No
     return data.data;
 });
 
+export const deleteNote = createAsyncThunk("notes/deleteNote", async (id: string) => {
+    const response = await fetch(`/api/notes/${id}`, {
+        method: "DELETE",
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return id;
+});
+
 const notesSlice = createSlice({
     name: "notes",
     initialState,
@@ -55,6 +64,9 @@ const notesSlice = createSlice({
             })
             .addCase(addNote.fulfilled, (state, action) => {
                 state.items.unshift(action.payload);
+            })
+            .addCase(deleteNote.fulfilled, (state, action) => {
+                state.items = state.items.filter((n) => n.id !== action.payload);
             });
     },
 });

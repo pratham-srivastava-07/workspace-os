@@ -16,6 +16,9 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Workspace OS | Unified Productivity",
   description: "All your tools, workflows, and notes — unified into one living workspace.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 import { StoreProvider } from "@/components/providers/StoreProvider";

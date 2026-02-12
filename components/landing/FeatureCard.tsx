@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { GlassCard } from "../ui/motion";
-    
+
 
 export default function FeatureCard({ icon, title, description, tag }: { icon: React.ReactNode, title: string, description: string, tag?: string }) {
     return (
@@ -10,7 +10,7 @@ export default function FeatureCard({ icon, title, description, tag }: { icon: R
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
         >
-            <GlassCard className="flex flex-col gap-5 p-8 h-full bg-white/50 dark:bg-slate-900/50 border border-slate-200/50 dark:border-slate-800/50 group hover:border-indigo-500/50 transition-colors duration-500">
+            <GlassCard className="flex flex-col gap-5 p-8 h-full bg-white/50 dark:bg-slate-900/50 border border-slate-200/50 dark:border-slate-800/50 group hover:border-indigo-500/50 transition-colors duration-500 cursor-pointer">
                 <div className="flex items-center justify-between">
                     <div className="w-14 h-14 rounded-[1.25rem] bg-indigo-500/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-indigo-500 transition-all duration-500">
                         <div className="group-hover:text-white transition-colors duration-500">

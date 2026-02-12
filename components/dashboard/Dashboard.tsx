@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FadeIn, GlassCard } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Plus, Activity, Clock, Layers, Bookmark, Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,6 +27,7 @@ import { QuickCreateModal } from "./QuickCreateModal";
 import { ManageWidgetsModal } from "./ManageWidgetsModal";
 
 export default function Dashboard() {
+    const { data: session } = useSession();
     const [stats, setStats] = useState<Stats | null>(null);
     const [activities, setActivities] = useState<ActivityEntry[]>([]);
     const [loading, setLoading] = useState(true);
@@ -80,7 +82,9 @@ export default function Dashboard() {
             <FadeIn>
                 <header className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-brand italic mb-2">Good morning</h1>
+                        <h1 className="text-3xl font-brand italic mb-2">
+                            Good morning{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
+                        </h1>
                         <p className="text-slate-500 text-sm">Here's what's happening in your workspace today.</p>
                     </div>
                     <Button
@@ -206,7 +210,7 @@ export default function Dashboard() {
 
 function StatCard({ icon, label, value, loading }: { icon: React.ReactNode, label: string, value?: string, loading?: boolean }) {
     return (
-        <GlassCard className="flex flex-col gap-2">
+        <GlassCard className="flex flex-col gap-2 cursor-pointer hover:bg-white/5 transition-all duration-300">
             <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800">
                     {icon}
@@ -224,7 +228,7 @@ function StatCard({ icon, label, value, loading }: { icon: React.ReactNode, labe
 
 function ActivityItem({ title, time, type }: { title: string, time: string, type: "task" | "note" | "bookmark" }) {
     return (
-        <div className="flex items-center gap-4 py-2 border-l-2 border-slate-100 dark:border-slate-800 pl-4 relative">
+        <div className="flex items-center gap-4 py-2 border-l-2 border-slate-100 dark:border-slate-800 pl-4 relative cursor-pointer hover:bg-slate-50/5 dark:hover:bg-white/5 transition-colors rounded-r-lg">
             <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-500" />
             <div className="flex-1">
                 <p className="text-sm font-medium">{title}</p>

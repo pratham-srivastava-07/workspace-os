@@ -2,17 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBookmarks, addBookmark, RootState, AppDispatch } from "@/store/store";
+import { fetchBookmarks, addBookmark, deleteBookmark, RootState, AppDispatch } from "@/store/store";
 import { GlassCard, FadeIn } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2, ExternalLink, Bookmark as BookmarkIcon } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Bookmark as BookmarkIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function BookmarksModule() {
     const dispatch = useDispatch<AppDispatch>();
     const { items: bookmarks, loading } = useSelector((state: RootState) => state.bookmarks);
     const [newBookmark, setNewBookmark] = useState({ title: "", url: "" });
+    const [actionId, setActionId] = useState<string | null>(null);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [bookmarkToDelete, setBookmarkToDelete] = useState<string | null>(null);
 
     useEffect(() => {
         dispatch(fetchBookmarks());
@@ -29,8 +33,34 @@ export default function BookmarksModule() {
         }
     };
 
+    const handleDeleteBookmark = (id: string) => {
+        setBookmarkToDelete(id);
+        setDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!bookmarkToDelete) return;
+        setActionId(bookmarkToDelete);
+        try {
+            await dispatch(deleteBookmark(bookmarkToDelete)).unwrap();
+            toast.success("Bookmark deleted");
+        } catch (err: any) {
+            toast.error("Failed to delete bookmark");
+        } finally {
+            setActionId(null);
+            setBookmarkToDelete(null);
+        }
+    };
+
     return (
         <div className="space-y-8 max-w-4xl mx-auto">
+            <ConfirmModal
+                open={deleteModalOpen}
+                onOpenChange={setDeleteModalOpen}
+                title="Delete Bookmark"
+                description="Are you sure you want to delete this bookmark? This action cannot be undone."
+                onConfirm={handleConfirmDelete}
+            />
             <FadeIn>
                 <header className="flex items-center justify-between">
                     <h1 className="text-3xl font-brand italic">Bookmarks</h1>
@@ -59,7 +89,7 @@ export default function BookmarksModule() {
             </FadeIn>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {loading ? (
+                {(loading && bookmarks.length === 0) ? (
                     <p className="col-span-full text-center text-slate-500 py-10 italic">Loading bookmarks...</p>
                 ) : bookmarks.length === 0 ? (
                     <FadeIn delay={0.2} className="col-span-full">
@@ -68,14 +98,20 @@ export default function BookmarksModule() {
                 ) : (
                     bookmarks.map((bookmark, index) => (
                         <FadeIn key={bookmark.id} delay={0.1 + index * 0.05}>
-                            <GlassCard className="relative group hover:shadow-xl transition-all duration-300">
+                            <GlassCard className="relative group hover:shadow-xl cursor-pointer hover:bg-white/5 transition-all duration-300">
                                 <div className="flex flex-col gap-3">
                                     <div className="flex items-center justify-between">
                                         <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 text-indigo-500">
                                             <BookmarkIcon size={18} />
                                         </div>
-                                        <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500 h-8 w-8">
-                                            <Trash2 size={16} />
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500 h-8 w-8"
+                                            onClick={() => handleDeleteBookmark(bookmark.id)}
+                                            disabled={actionId === bookmark.id}
+                                        >
+                                            {actionId === bookmark.id ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={16} />}
                                         </Button>
                                     </div>
                                     <h3 className="font-bold truncate" title={bookmark.title}>{bookmark.title}</h3>

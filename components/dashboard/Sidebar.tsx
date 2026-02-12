@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { PricingModal } from "@/components/workspace/PricingModal";
 
 const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -28,60 +29,81 @@ const menuItems = [
 export function Sidebar() {
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
+    const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
     return (
-        <div className={cn(
-            "relative h-screen glass border-r border-white/10 transition-all duration-300 flex flex-col z-40 overflow-hidden",
-            "hidden md:flex",
-            collapsed ? "w-20" : "w-64"
-        )}>
-            <div className="p-6 flex items-center justify-between">
-                {!collapsed && (
-                    <span className="font-brand italic text-xl font-bold">Workspace OS</span>
-                )}
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setCollapsed(!collapsed)}
-                    className="ml-auto"
-                >
-                    {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-                </Button>
-            </div>
+        <>
+            <div className={cn(
+                "relative h-full glass border-r border-white/10 transition-all duration-300 flex flex-col z-40 overflow-hidden",
+                "hidden md:flex",
+                collapsed ? "w-16" : "w-60"
+            )}>
+                <div className="p-3.5 flex items-center justify-between">
+                    {!collapsed && (
+                        <span className="font-brand italic text-lg font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                            Workspace
+                        </span>
+                    )}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setCollapsed(!collapsed)}
+                        className={cn("h-8 w-8 hover:bg-white/10", !collapsed && "ml-auto")}
+                    >
+                        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+                    </Button>
+                </div>
 
-            <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto scrollbar-none scroll-smooth">
-                {menuItems.map((item) => {
-                    const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={cn(
-                                "flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/10",
-                                isActive ? "bg-white/10 text-primary font-medium" : "text-slate-500",
-                                collapsed && "justify-center px-0"
-                            )}
+                <nav className="flex-1 px-2 py-1 space-y-0.5 overflow-hidden">
+                    {menuItems.map((item) => {
+                        const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={cn(
+                                    "flex items-center gap-2.5 px-3 py-1.5 rounded-lg transition-all duration-200 group",
+                                    isActive
+                                        ? "bg-indigo-500/10 text-indigo-500 font-semibold"
+                                        : "text-slate-500 hover:bg-white/5 hover:text-slate-900 dark:hover:text-white",
+                                    collapsed && "justify-center px-0"
+                                )}
+                            >
+                                <item.icon size={16} className={cn(isActive ? "text-indigo-500" : "group-hover:text-indigo-400 transition-colors")} />
+                                {!collapsed && <span className="text-[13px]">{item.label}</span>}
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                <div className="p-2.5 mt-auto border-t border-white/10">
+                    {!collapsed ? (
+                        <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl p-2.5 border border-indigo-500/20 cursor-pointer hover:bg-white/5 transition-colors group/card">
+                            <div className="flex items-center justify-between mb-1">
+                                <p className="text-[9px] font-bold text-indigo-600 uppercase tracking-wider">PRO PLAN</p>
+                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 group-hover/card:scale-125 transition-transform" />
+                            </div>
+                            <p className="text-[10px] font-medium mb-2 text-slate-500 dark:text-slate-400 leading-tight">Unlock all premium assets.</p>
+                            <Button
+                                size="sm"
+                                onClick={() => setIsPricingModalOpen(true)}
+                                className="w-full h-7 text-[10px] rounded-lg bg-indigo-500 hover:bg-indigo-600 shadow-md shadow-indigo-500/10 cursor-pointer"
+                            >
+                                Upgrade
+                            </Button>
+                        </div>
+                    ) : (
+                        <div
+                            className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center mx-auto border border-indigo-500/20 cursor-pointer"
+                            title="Pro Plan"
+                            onClick={() => setIsPricingModalOpen(true)}
                         >
-                            <item.icon size={22} className={cn(isActive && "text-indigo-500")} />
-                            {!collapsed && <span>{item.label}</span>}
-                        </Link>
-                    );
-                })}
-            </nav>
-
-            <div className="p-6 border-t border-white/10">
-                {!collapsed ? (
-                    <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl p-4">
-                        <p className="text-xs font-semibold text-indigo-400 uppercase mb-2">Workspace Plan</p>
-                        <p className="text-sm font-bold mb-4">Pro Plan</p>
-                        <Button size="sm" className="w-full rounded-lg bg-indigo-500 hover:bg-indigo-600">
-                            Upgrade
-                        </Button>
-                    </div>
-                ) : (
-                    <div className="w-8 h-8 rounded-full bg-indigo-500 mx-auto" title="Pro Plan" />
-                )}
+                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+            <PricingModal open={isPricingModalOpen} onOpenChange={setIsPricingModalOpen} />
+        </>
     );
 }

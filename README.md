@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workspace OS
 
-## Getting Started
+Workspace OS is an advanced, integrated productivity environment designed to streamline professional workflows. It provides a modular architecture for managing tasks, project pipelines, research notes, and informational bookmarks within a unified, high-performance interface.
 
-First, run the development server:
+## Core Features
+
+- **Integrated Task Management**: Robust task tracking with status transitions and priority handling.
+- **Dynamic Project Pipelines**: Flexible Kanban-style boards for visual project progress tracking and stage management.
+- **Contextual Note-Taking**: A sophisticated system for capturing and organizing internal documentation and research.
+- **Resource Management**: Efficient bookmarking system for external references and cross-platform resource curation.
+- **Personalized Dashboard**: A data-driven overview featuring real-time statistics, activity streams, and customizable interface widgets.
+- **User Preferences**: Persistent configuration for application behavior and interface presentation.
+
+## Technology Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Programming Language**: Javascript/TypeScript
+- **State Management**: Redux Toolkit
+- **Persistence Layer**: PostgreSQL with Prisma ORM
+- **Authentication**: NextAuth.js
+- **Styling**: Tailwind CSS
+- **Interactions**: Framer Motion
+- **Component Library**: Radix UI / Shadcn UI
+
+## System Requirements
+
+- Node.js 20 or higher
+- PostgreSQL 14 or higher
+- npm or equivalent package manager
+
+## Installation and Setup
+
+### 1. Repository Setup
+
+Clone the repository to your local environment:
+
+```bash
+git clone <repository-url>
+cd workspace-os
+```
+
+### 2. Dependency Installation
+
+Install the required package dependencies:
+
+```bash
+npm install
+```
+
+### 3. Environment Configuration
+
+Create a `.env` file in the root directory based on the following template:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/workspace_db"
+AUTH_SECRET="your-secret-key"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
+
+### 4. Database Initialization
+
+Generate the Prisma client and synchronize the database schema:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 5. Development Environment
+
+Initialize the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be accessible at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Building for Production
 
-## Learn More
+To generate a production-optimized build:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Starting the Application
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To execute the application in production mode:
 
-## Deploy on Vercel
+```bash
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Maintenance and Testing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Linting
+
+Ensure code quality and style consistency:
+
+```bash
+npm run lint
+```
+
+## Continuous Integration
+
+The project includes a GitHub Actions workflow that performs automated installation, linting, and build verification on every push and pull request to the main branch.

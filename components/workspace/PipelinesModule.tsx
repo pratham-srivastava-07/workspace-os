@@ -8,29 +8,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, MoreVertical, Layout, GripVertical, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 export default function PipelinesModule() {
     const dispatch = useDispatch<AppDispatch>();
     const { items: pipelines, loading } = useSelector((state: RootState) => state.pipelines);
     const [activePipelineId, setActivePipelineId] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState(false);
+    const [createModalOpen, setCreateModalOpen] = useState(false);
+    const [newPipelineTitle, setNewPipelineTitle] = useState("");
 
     const handleCreatePipeline = async () => {
-        const title = prompt("Enter pipeline name:");
-        if (!title) return;
+        if (!newPipelineTitle.trim()) return;
 
         setIsCreating(true);
         try {
             const res = await fetch("/api/pipelines", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title }),
+                body: JSON.stringify({ title: newPipelineTitle }),
             });
             const data = await res.json();
             if (data.success) {
                 toast.success("Pipeline created!");
                 dispatch(fetchPipelines());
                 if (data.data?.id) setActivePipelineId(data.data.id);
+                setCreateModalOpen(false);
+                setNewPipelineTitle("");
             } else {
                 toast.error(data.error || "Failed to create pipeline");
             }
@@ -73,14 +85,41 @@ export default function PipelinesModule() {
                     </div>
                     <Button
                         className="rounded-full gap-2 shadow-lg"
-                        onClick={handleCreatePipeline}
+                        onClick={() => setCreateModalOpen(true)}
                         disabled={isCreating}
                     >
-                        {isCreating ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
+                        <Plus size={18} />
                         New Pipeline
                     </Button>
                 </header>
             </FadeIn>
+
+            <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Pipeline</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="title">Pipeline Name</Label>
+                            <Input
+                                id="title"
+                                placeholder="e.g. Sales Funnel, Product Roadmap"
+                                value={newPipelineTitle}
+                                onChange={(e) => setNewPipelineTitle(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleCreatePipeline()}
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="ghost" onClick={() => setCreateModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleCreatePipeline} disabled={isCreating || !newPipelineTitle.trim()}>
+                            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Create Pipeline
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             <div className="flex-1 overflow-x-auto px-6 pb-6">
                 <div className="flex gap-6 h-full min-w-max">

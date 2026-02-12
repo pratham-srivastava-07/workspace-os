@@ -106,7 +106,7 @@ export function ManageWidgetsModal({ open, onOpenChange, onSuccess }: ManageWidg
                 ) : (
                     <div className="grid gap-4 py-4">
                         {ALL_WIDGETS.map((widget) => (
-                            <div key={widget.id} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                            <div key={widget.id} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm">
                                         <widget.icon size={18} className="text-indigo-500" />

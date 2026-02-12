@@ -38,6 +38,26 @@ export const addTask = createAsyncThunk("tasks/addTask", async (task: Partial<Ta
     return data.data;
 });
 
+export const toggleTask = createAsyncThunk("tasks/toggleTask", async ({ id, status }: { id: string; status: string }) => {
+    const response = await fetch(`/api/tasks/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return data.data;
+});
+
+export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id: string) => {
+    const response = await fetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return id;
+});
+
 const tasksSlice = createSlice({
     name: "tasks",
     initialState,
@@ -57,6 +77,15 @@ const tasksSlice = createSlice({
             })
             .addCase(addTask.fulfilled, (state, action) => {
                 state.items.unshift(action.payload);
+            })
+            .addCase(toggleTask.fulfilled, (state, action) => {
+                const index = state.items.findIndex((t) => t.id === action.payload.id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+            })
+            .addCase(deleteTask.fulfilled, (state, action) => {
+                state.items = state.items.filter((t) => t.id !== action.payload);
             });
     },
 });

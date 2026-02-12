@@ -36,6 +36,15 @@ export const addBookmark = createAsyncThunk("bookmarks/addBookmark", async (book
     return data.data;
 });
 
+export const deleteBookmark = createAsyncThunk("bookmarks/deleteBookmark", async (id: string) => {
+    const response = await fetch(`/api/bookmarks/${id}`, {
+        method: "DELETE",
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return id;
+});
+
 const bookmarksSlice = createSlice({
     name: "bookmarks",
     initialState,
@@ -55,6 +64,9 @@ const bookmarksSlice = createSlice({
             })
             .addCase(addBookmark.fulfilled, (state, action) => {
                 state.items.unshift(action.payload);
+            })
+            .addCase(deleteBookmark.fulfilled, (state, action) => {
+                state.items = state.items.filter((b) => b.id !== action.payload);
             });
     },
 });

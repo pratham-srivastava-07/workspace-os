@@ -2,18 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNotes, addNote, RootState, AppDispatch } from "@/store/store";
+import { fetchNotes, addNote, deleteNote, RootState, AppDispatch } from "@/store/store";
 import { GlassCard, FadeIn } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2, StickyNote } from "lucide-react";
+import { Plus, Trash2, StickyNote, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function NotesModule() {
     const dispatch = useDispatch<AppDispatch>();
     const { items: notes, loading } = useSelector((state: RootState) => state.notes);
     const [newNote, setNewNote] = useState({ title: "", content: "" });
+    const [actionId, setActionId] = useState<string | null>(null);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
 
     useEffect(() => {
         dispatch(fetchNotes());
@@ -30,8 +34,34 @@ export default function NotesModule() {
         }
     };
 
+    const handleDeleteNote = (id: string) => {
+        setNoteToDelete(id);
+        setDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!noteToDelete) return;
+        setActionId(noteToDelete);
+        try {
+            await dispatch(deleteNote(noteToDelete)).unwrap();
+            toast.success("Note deleted");
+        } catch (err: any) {
+            toast.error("Failed to delete note");
+        } finally {
+            setActionId(null);
+            setNoteToDelete(null);
+        }
+    };
+
     return (
         <div className="space-y-8 max-w-4xl mx-auto">
+            <ConfirmModal
+                open={deleteModalOpen}
+                onOpenChange={setDeleteModalOpen}
+                title="Delete Note"
+                description="Are you sure you want to delete this note? This action cannot be undone."
+                onConfirm={handleConfirmDelete}
+            />
             <FadeIn>
                 <header className="flex items-center justify-between">
                     <h1 className="text-3xl font-brand italic">Notes</h1>
@@ -60,7 +90,7 @@ export default function NotesModule() {
             </FadeIn>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {loading ? (
+                {(loading && notes.length === 0) ? (
                     <p className="col-span-2 text-center text-slate-500 py-10 italic">Loading notes...</p>
                 ) : notes.length === 0 ? (
                     <FadeIn delay={0.2} className="col-span-2">
@@ -69,13 +99,15 @@ export default function NotesModule() {
                 ) : (
                     notes.map((note, index) => (
                         <FadeIn key={note.id} delay={0.1 + index * 0.05}>
-                            <GlassCard className="relative group min-h-[160px] hover:shadow-xl transition-all duration-500">
+                            <GlassCard className="relative group min-h-[160px] hover:shadow-xl cursor-pointer hover:bg-white/5 transition-all duration-500">
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
+                                    onClick={() => handleDeleteNote(note.id)}
+                                    disabled={actionId === note.id}
                                 >
-                                    <Trash2 size={16} />
+                                    {actionId === note.id ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={16} />}
                                 </Button>
                                 <div className="flex items-center gap-3 mb-4">
                                     <StickyNote size={20} className="text-indigo-500" />

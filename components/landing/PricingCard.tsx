@@ -14,7 +14,7 @@ export const PricingCard = memo(({ tier, price, features, highlight = false }: {
             transition={{ duration: 0.5 }}
             className="h-full"
         >
-            <GlassCard className={cn("relative h-full flex flex-col gap-6 p-10 border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-3xl", highlight && "border-indigo-500 ring-2 ring-indigo-500/20 shadow-2xl shadow-indigo-500/10 scale-105 z-10")}>
+            <GlassCard className={cn("relative h-full flex flex-col gap-6 p-10 border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-3xl cursor-pointer hover:bg-white/5 transition-colors", highlight && "border-indigo-500 ring-2 ring-indigo-500/20 shadow-2xl shadow-indigo-500/10 scale-105 z-10")}>
                 {highlight && (
                     <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20">
                         Recommended
