@@ -107,7 +107,7 @@ export default function AboutPage() {
                     <div className="flex gap-8">
                         <Link href="/terms" className="text-sm text-slate-500 hover:text-indigo-500">Terms</Link>
                         <Link href="/privacy" className="text-sm text-slate-500 hover:text-indigo-500">Privacy</Link>
-                        <Link href="https://twitter.com/workspaceos" className="text-sm text-slate-500 hover:text-indigo-500">Twitter</Link>
+                        <Link href="https://x.com/_pratham_rs" className="text-sm text-slate-500 hover:text-indigo-500">Twitter</Link>
                     </div>
                 </div>
             </footer>
