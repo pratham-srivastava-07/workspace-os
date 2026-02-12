@@ -105,6 +105,18 @@ Ensure code quality and style consistency:
 npm run lint
 ```
 
+### Production Auth Configuration
+
+When deploying to Vercel or other providers:
+
+1.  **Environment Variables**:
+    - `AUTH_URL`: Set this to your production URL (e.g., `https://your-app.vercel.app`). **CRITICAL**: Do not include a trailing slash.
+    - `AUTH_TRUST_HOST`: Set to `true`.
+    - `AUTH_SECRET`: Generate a new random secret for production.
+2.  **Google Cloud Console**:
+    - Add the production callback URL to "Authorized redirect URIs": `https://your-app.vercel.app/api/auth/callback/google`.
+    - Ensure your Client ID and Secret in Vercel match the console precisely.
+
 ## Continuous Integration
 
 The project includes a GitHub Actions workflow that performs automated installation, linting, and build verification on every push and pull request to the main branch.
