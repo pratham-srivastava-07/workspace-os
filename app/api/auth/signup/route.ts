@@ -29,16 +29,17 @@ export async function POST(req: Request) {
             },
         });
 
-        const { password: _, ...userWithoutPassword } = user;
+        const { password: _password, ...userWithoutPassword } = user;
 
         return NextResponse.json(
             { message: "User created successfully", user: userWithoutPassword },
             { status: 201 }
         );
-    } catch (error: any) {
-        if (error.name === "ZodError") {
+    } catch (error: unknown) {
+        if (error && typeof error === 'object' && 'name' in error && error.name === "ZodError") {
+            const zodError = error as unknown as { errors: unknown[] };
             return NextResponse.json(
-                { message: "Invalid input data", errors: error.errors },
+                { message: "Invalid input data", errors: zodError.errors },
                 { status: 400 }
             );
         }

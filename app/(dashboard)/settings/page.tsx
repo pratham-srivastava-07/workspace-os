@@ -8,12 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
 import {
     User,
-    Bell,
     Palette,
-    Shield,
     Layout,
     Loader2,
     Activity,
@@ -24,9 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-interface Preferences {
-    widgets: string[];
-}
+
 
 const ALL_WIDGETS = [
     { id: "tasks", label: "Tasks Due", icon: Activity },
@@ -63,8 +58,8 @@ export default function SettingsPage() {
             } else {
                 setWidgets(["tasks", "pipelines", "notes", "bookmarks", "activity", "deadlines"]);
             }
-        } catch (error) {
-            console.error("Failed to fetch preferences:", error);
+        } catch (_error) {
+            console.error("Failed to fetch preferences:", _error);
         } finally {
             setFetching(false);
         }
@@ -85,7 +80,7 @@ export default function SettingsPage() {
             } else {
                 toast.error(data.error || "Failed to update profile");
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("An error occurred");
         } finally {
             setLoading(false);
@@ -112,7 +107,7 @@ export default function SettingsPage() {
             } else {
                 toast.error(data.error || "Failed to save preferences");
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("An error occurred");
         } finally {
             setLoading(false);

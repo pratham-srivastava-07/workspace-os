@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Plus, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 type EntityType = "task" | "note" | "bookmark" | "pipeline";
 
@@ -61,7 +61,7 @@ export function QuickCreateModal({ open, onOpenChange, onSuccess }: QuickCreateM
             } else {
                 toast.error(data.error || `Failed to create ${type}`);
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);

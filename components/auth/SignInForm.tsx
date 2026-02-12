@@ -156,7 +156,7 @@ export default function SignInForm() {
                     </div>
 
                     <p className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
-                        Don't have an account yet?{" "}
+                        Don&apos;t have an account yet?{" "}
                         <Link href="/auth/signin" className="text-indigo-500 hover:text-indigo-600 font-bold underline underline-offset-4 decoration-indigo-500/30">
                             Join the waitlist
                         </Link>

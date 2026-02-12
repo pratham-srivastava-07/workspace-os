@@ -51,8 +51,8 @@ export function ManageWidgetsModal({ open, onOpenChange, onSuccess }: ManageWidg
                 // Default widgets if none set
                 setWidgets(["tasks", "pipelines", "notes", "bookmarks", "activity", "deadlines"]);
             }
-        } catch (error) {
-            console.error("Failed to fetch preferences:", error);
+        } catch (_error) {
+            console.error("Failed to fetch preferences:", _error);
         } finally {
             setFetching(false);
         }
@@ -82,7 +82,7 @@ export function ManageWidgetsModal({ open, onOpenChange, onSuccess }: ManageWidg
             } else {
                 toast.error(data.error || "Failed to save preferences");
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);

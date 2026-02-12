@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/motion";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 
@@ -49,9 +50,11 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-indigo-500/5 blur-3xl rounded-full -z-10" />
                 <div className="rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl bg-white/10 dark:bg-slate-900/10 backdrop-blur-md p-4 max-w-5xl mx-auto">
                     <div className="rounded-2xl overflow-hidden aspect-video bg-slate-950 flex items-center justify-center group relative cursor-pointer">
-                        <img
+                        <Image
                             src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426"
                             alt="Dashboard Preview"
+                            width={1200}
+                            height={675}
                             className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />

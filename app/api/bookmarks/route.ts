@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { bookmarkSchema } from "@/lib/validations/schemas";
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
     const session = await auth();
     if (!session?.user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
             orderBy: { createdAt: "desc" },
         });
         return NextResponse.json({ success: true, data: bookmarks });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to fetch bookmarks" }, { status: 500 });
     }
 }
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
             data: { ...validated, userId: session.user.id! },
         });
         return NextResponse.json({ success: true, data: bookmark });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to create bookmark" }, { status: 500 });
     }
 }

@@ -1,16 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { FadeIn, GlassCard } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Rocket, Shield, Zap, Heart, Star, ChevronRight } from "lucide-react";
+import { Shield, Zap, Heart } from "lucide-react";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
 
 export default function AboutPage() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-            {/* <Navbar session={null} /> Simplified for now, or just leave session as null for landing/about */}
+            {/* <Navbar session={null} /> */}
 
             <main className="max-w-7xl mx-auto px-6 py-20">
                 {/* Hero Section */}
@@ -79,7 +77,7 @@ export default function AboutPage() {
                     <div className="relative z-10 max-w-2xl">
                         <h2 className="text-4xl md:text-5xl font-brand italic mb-8">Guided by Simplicity.</h2>
                         <p className="text-xl text-slate-300 leading-relaxed mb-12">
-                            The future of work isn't about more tabs or more notifications. It's about a unified interface that understands your workflow and stays out of your way.
+                            The future of work isn&apos;t about more tabs or more notifications. It&apos;s about a unified interface that understands your workflow and stays out of your way.
                         </p>
                         <div className="flex items-center gap-6">
                             <div className="flex -space-x-3">

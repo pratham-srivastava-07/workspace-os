@@ -16,7 +16,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+
 
 export default function PipelinesModule() {
     const dispatch = useDispatch<AppDispatch>();
@@ -46,8 +46,8 @@ export default function PipelinesModule() {
             } else {
                 toast.error(data.error || "Failed to create pipeline");
             }
-        } catch (error) {
-            toast.error("Error creating pipeline");
+        } catch (_error) {
+            toast.error("An error occurred. Please try again.");
         } finally {
             setIsCreating(false);
         }

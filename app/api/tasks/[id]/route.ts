@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 export async function PATCH(
-    req: Request,
+    _req: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
@@ -13,7 +13,7 @@ export async function PATCH(
     }
 
     try {
-        const body = await req.json();
+        const body = await _req.json();
         const { status } = body;
 
         const task = await db.task.update({
@@ -25,13 +25,13 @@ export async function PATCH(
         });
 
         return NextResponse.json({ success: true, data: task });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to update task" }, { status: 500 });
     }
 }
 
 export async function DELETE(
-    req: Request,
+    _req: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
@@ -49,7 +49,7 @@ export async function DELETE(
         });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to delete task" }, { status: 500 });
     }
 }

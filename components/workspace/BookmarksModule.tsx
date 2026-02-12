@@ -28,8 +28,8 @@ export default function BookmarksModule() {
             await dispatch(addBookmark(newBookmark)).unwrap();
             setNewBookmark({ title: "", url: "" });
             toast.success("Bookmark added");
-        } catch (err: any) {
-            toast.error(err.message || "Failed to add bookmark");
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Failed to add bookmark");
         }
     };
 
@@ -44,7 +44,7 @@ export default function BookmarksModule() {
         try {
             await dispatch(deleteBookmark(bookmarkToDelete)).unwrap();
             toast.success("Bookmark deleted");
-        } catch (err: any) {
+        } catch {
             toast.error("Failed to delete bookmark");
         } finally {
             setActionId(null);

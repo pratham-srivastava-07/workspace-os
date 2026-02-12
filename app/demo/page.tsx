@@ -1,18 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { FadeIn, GlassCard } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import {
     Zap,
-    Layers,
     Plus,
     Layout,
     Workflow,
     ChevronRight,
-    Sparkles,
-    Monitor,
-    MousePointer2
 } from "lucide-react";
 import Link from "next/link";
 

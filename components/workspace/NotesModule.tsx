@@ -29,8 +29,8 @@ export default function NotesModule() {
             await dispatch(addNote(newNote)).unwrap();
             setNewNote({ title: "", content: "" });
             toast.success("Note created");
-        } catch (err: any) {
-            toast.error(err.message || "Failed to add note");
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Failed to add note");
         }
     };
 
@@ -45,7 +45,7 @@ export default function NotesModule() {
         try {
             await dispatch(deleteNote(noteToDelete)).unwrap();
             toast.success("Note deleted");
-        } catch (err: any) {
+        } catch {
             toast.error("Failed to delete note");
         } finally {
             setActionId(null);

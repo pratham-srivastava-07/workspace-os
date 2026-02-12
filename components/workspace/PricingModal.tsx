@@ -60,7 +60,7 @@ export function PricingModal({ open, onOpenChange }: PricingModalProps) {
                             Elevate your <span className="text-indigo-600">Workspace</span>
                         </DialogTitle>
                         <DialogDescription className="text-sm md:text-base lg:text-lg text-slate-500">
-                            Choose the plan that's right for your productivity journey.
+                            Choose the plan that&apos;s right for your productivity journey.
                         </DialogDescription>
                     </DialogHeader>
 

@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { FadeIn, GlassCard } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Plus, Activity, Clock, Layers, Bookmark, Loader2 } from "lucide-react";
+import { Plus, Activity, Clock, Layers, Bookmark } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -85,7 +84,7 @@ export default function Dashboard() {
                         <h1 className="text-3xl font-brand italic mb-2">
                             Good morning{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
                         </h1>
-                        <p className="text-slate-500 text-sm">Here's what's happening in your workspace today.</p>
+                        <p className="text-slate-500 text-sm">Here&apos;s what&apos;s happening in your workspace today.</p>
                     </div>
                     <Button
                         className="rounded-full gap-2 shadow-lg shadow-indigo-500/20"

@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
-    req: Request,
+    _req: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
@@ -21,7 +21,7 @@ export async function DELETE(
         });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to delete bookmark" }, { status: 500 });
     }
 }

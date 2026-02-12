@@ -7,7 +7,9 @@ import { signOut } from 'next-auth/react';
 import { MotionNav, motion, AnimatePresence } from '@/components/ui/motion';
 import { Menu, X, Rocket, ChevronRight } from 'lucide-react';
 
-export default function Navbar({ session }: { session: any }) {
+import { Session } from 'next-auth';
+
+export default function Navbar({ session }: { session: Session | null }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navLinks = [

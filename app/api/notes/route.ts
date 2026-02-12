@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { noteSchema } from "@/lib/validations/schemas";
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
     const session = await auth();
     if (!session?.user) {
         return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
             orderBy: { updatedAt: "desc" },
         });
         return NextResponse.json({ success: true, data: notes });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to fetch notes" }, { status: 500 });
     }
 }
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
             },
         });
         return NextResponse.json({ success: true, data: note });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ success: false, error: "Failed to create note" }, { status: 500 });
     }
 }

@@ -12,7 +12,7 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function TasksModule() {
     const dispatch = useDispatch<AppDispatch>();
-    const { items: tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+    const { items: tasks, loading } = useSelector((state: RootState) => state.tasks);
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [actionId, setActionId] = useState<string | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -28,8 +28,8 @@ export default function TasksModule() {
             await dispatch(addTask({ title: newTaskTitle })).unwrap();
             setNewTaskTitle("");
             toast.success("Task created");
-        } catch (err: any) {
-            toast.error(err.message || "Failed to add task");
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Failed to add task");
         }
     };
 
@@ -38,7 +38,7 @@ export default function TasksModule() {
         setActionId(id);
         try {
             await dispatch(toggleTask({ id, status: newStatus })).unwrap();
-        } catch (err: any) {
+        } catch {
             toast.error("Failed to update task");
         } finally {
             setActionId(null);
@@ -56,7 +56,7 @@ export default function TasksModule() {
         try {
             await dispatch(deleteTask(taskToDelete)).unwrap();
             toast.success("Task deleted");
-        } catch (err: any) {
+        } catch {
             toast.error("Failed to delete task");
         } finally {
             setActionId(null);

@@ -45,3 +45,5 @@ export const PricingCard = memo(({ tier, price, features, highlight = false }: {
         </motion.div>
     );
 });
+
+PricingCard.displayName = "PricingCard";
